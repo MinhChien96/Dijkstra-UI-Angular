@@ -1,0 +1,61 @@
+<p-growl [(value)]="msgs" [life]="3000"></p-growl>
+<div class="container">
+  <form>
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="point">Số điểm</label>
+        <input type="number" [(ngModel)]="pointNum" name="pointNum" min="2" max="20" class="form-control" id="point" required>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="edge">Số cạnh</label>
+        <input [(ngModel)]="lineNum" name="lineNum" type="number" min="1" max="400" class="form-control" id="edge" required>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="pointstart">Điểm đầu</label>
+        <select [(ngModel)]="pointStart" name="pointstart" class="form-control">
+          <option *ngFor="let point of lstPoint; index as i" [value]="i">{{point.name}}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="pointend">Điểm cuối</label>
+        <select [(ngModel)]="pointEnd" name="pointend" class="form-control">
+          <option *ngFor="let point of lstPoint; index as i" [value]="i">{{point.name}}</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn" style="margin: 5px" (click)="reset()">Reset</button>
+    <button type="submit" class="btn" style="margin: 5px" (click)="Find()">Tìm đường</button>
+  </form>
+</div>
+<p-messages [(value)]="msg" [style]="{'width':'50%','margin':'auto','text-align':'center'}"></p-messages>
+<div class="container" style="border: 1px black solid;margin-top: 50px">
+  <svg width="1100" height="1100px">
+    <defs>
+      <!-- <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#f00" />
+      </marker> -->
+      <!-- <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5"
+          markerWidth="6" markerHeight="6"
+          orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="red"/>
+      </marker> -->
+      <marker id="arrow" markerWidth="10" markerHeight="10" refX="20" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#f00" />
+      </marker>
+      <marker id="arrow1" markerWidth="10" markerHeight="10" refX="25" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#257AE9" />
+      </marker>
+    </defs>
+    <circle *ngFor="let point of lstPoint" [attr.cx]="(point.x+100)*5" [attr.cy]="(point.y+100)*5" r="8" stroke="black" stroke-width="1"
+      fill="white" />
+
+    <text *ngFor="let point of lstPoint" [attr.x]="(point.x+100)*5-5" [attr.y]="(point.y+100)*5+5" fill="blue">{{point.name}}</text>
+
+    <line *ngFor="let line of lstLine" [attr.x1]="(line.point1.x+100)*5" [attr.y1]="(line.point1.y+100)*5" [attr.x2]="(line.point2.x+100)*5"
+      [attr.y2]="(line.point2.y+100)*5" stroke="#000" stroke-width="1" marker-end="url(#arrow)" />
+
+    <line *ngFor="let line of lstLineFind" [attr.x1]="(line.point1.x+100)*5" [attr.y1]="(line.point1.y+100)*5" [attr.x2]="(line.point2.x+100)*5"
+      [attr.y2]="(line.point2.y+100)*5" stroke="#257AE9" stroke-width="2" marker-end="url(#arrow1)" />
+
+  </svg>
+</div>
